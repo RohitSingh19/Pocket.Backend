@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POC_Backend.DTO;
 using Pocket.API.Models;
 using Pocket.API.Services;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Pocket.API.Controllers
@@ -10,16 +13,11 @@ namespace Pocket.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly ITokenService _tokenService;
+        public UserController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] User obj)
-        { 
-            await _userService.AddUser(obj);
-            return Ok(obj);
+            _tokenService = tokenService;
         }
     }
 }

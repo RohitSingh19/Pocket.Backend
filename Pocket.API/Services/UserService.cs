@@ -20,5 +20,25 @@ namespace Pocket.API.Services
             await _usersCollection.InsertOneAsync(user);
             return true;
         }
+
+        public async Task<User> GetUserByEmail(string Email)
+        {
+           return await _usersCollection.Find<User>(x=> x.Email == Email).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> HasUserAlreadyRegistered(string Email)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(Email)) throw new ArgumentNullException("Email can not be null");
+
+                return (await _usersCollection.Find(x => x.Email == Email).AnyAsync());
+               
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
+        }
     }
 }
