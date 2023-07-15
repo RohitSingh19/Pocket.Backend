@@ -6,8 +6,8 @@
 
         public string DatabaseName { get; set; } = null!;
 
-        public string PocketCollectionName { get; set; } = null!;
+        public string PocketProfileCollectionName { get; set; } = null!;
 
-        public string UsersCollectionName { get; set; } = null!;    
+        public string UsersCollectionName { get; set; } = null!;
     }
 }

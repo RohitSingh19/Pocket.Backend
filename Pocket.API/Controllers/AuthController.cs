@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using POC_Backend.DTO;
+using Pocket.API.DTO;
 using Pocket.API.Models;
 using Pocket.API.Services;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Pocket.API.Controllers
 {
@@ -22,6 +22,7 @@ namespace Pocket.API.Controllers
         }
 
         [HttpPost("register")] //POST: api/auth/register
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegisterDTO userRegisteredDTO)
         {
             if (await _userService.HasUserAlreadyRegistered(userRegisteredDTO.Email))
@@ -42,6 +43,7 @@ namespace Pocket.API.Controllers
         }
 
         [HttpPost("login")] //POST: api/auth/login
+        [AllowAnonymous]
         public async Task<ActionResult<User>> Login(LoginDTO loginDTO)
         {
             var user = await _userService.GetUserByEmail(loginDTO.Email);   

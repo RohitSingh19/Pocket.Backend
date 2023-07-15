@@ -1,4 +1,4 @@
-﻿namespace POC_Backend.DTO
+﻿namespace Pocket.API.DTO
 {
     public class UserResponseDTO
     {

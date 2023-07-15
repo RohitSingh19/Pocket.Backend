@@ -1,4 +1,5 @@
-﻿using Pocket.API.Models;
+﻿using Pocket.API.DTO;
+using Pocket.API.Models;
 using System.Threading.Tasks;
 
 namespace Pocket.API.Services
@@ -7,8 +8,16 @@ namespace Pocket.API.Services
     {
         Task<bool> AddUser(User user);
 
-        Task<bool> HasUserAlreadyRegistered(string Email);
+        Task<bool> HasUserAlreadyRegistered(string email);
 
-        Task<User> GetUserByEmail(string Email);
+        Task<User> GetUserByEmail(string email);
+
+        Task<User> GetUserByUsername(string userName);
+
+        Task<User> GetUserById(string id);
+
+        Task<bool> CreateUserName(PocketProfile pocketProfile);
+
+        Task<bool> UpdateUserNameInUsers(string userName, string userId);
     }
 }
