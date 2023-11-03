@@ -8,7 +8,7 @@ namespace Pocket.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly IPocketService _pocketService;
@@ -22,6 +22,13 @@ namespace Pocket.API.Controllers
         {
             await _pocketService.AddProfile(createPocketProfile);
             return Ok();
+        }
+
+        [HttpGet("check/{userName}")]
+        public async Task<ActionResult> Check(string userName)
+        {
+            var data = await _pocketService.GetUserProfile(userName);
+            return Ok(data);
         }
     }
 }

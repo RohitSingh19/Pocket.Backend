@@ -9,5 +9,7 @@
         public string PocketProfileCollectionName { get; set; } = null!;
 
         public string UsersCollectionName { get; set; } = null!;
+
+        public string ProfileCollectionName { get; set; } = null!;  
     }
 }

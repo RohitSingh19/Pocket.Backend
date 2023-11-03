@@ -5,6 +5,11 @@ namespace Pocket.API.Models
 {
     public class PocketProfile
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("_id")]
+        public string Id { get; set; }
+
         [BsonElement("userId")]
         public string UserId { get; set; }
 
@@ -18,6 +23,6 @@ namespace Pocket.API.Models
         public DateTime LastModifiedAt { get; set; }
         
         [BsonElement("userProfiles")]
-        public Profile[] Profiles { get; set; }  
+        public UserProfile[] Profiles { get; set; }  = new UserProfile[0];
     }
 }
