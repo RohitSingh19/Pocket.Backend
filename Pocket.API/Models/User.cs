@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System;
+using Pocket.API.Constants;
 
 namespace Pocket.API.Models
 {
@@ -22,14 +23,14 @@ namespace Pocket.API.Models
 
         [BsonElement("userName")]
         public string UserName { get; set; }
-        
-        [BsonElement("isActive")]
-        public bool IsActive { get; set; }
-        
+
+        [BsonElement("stage")]
+        public UserProfileStages Stage { get; set; } = UserProfileStages.ProfileNameStage;
+
         [BsonElement("createdAt")]
-        public DateTime CreatedAt { get; set; }
-        
-        [BsonElement("lastModifiedAt")]
-        public DateTime LastModifiedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [BsonElement("lastActiveAt")]
+        public DateTime LastActiveAt { get; set; } = DateTime.UtcNow;
     }
 }
