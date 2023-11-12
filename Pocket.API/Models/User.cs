@@ -27,6 +27,9 @@ namespace Pocket.API.Models
         [BsonElement("stage")]
         public UserProfileStages Stage { get; set; } = UserProfileStages.ProfileNameStage;
 
+        [BsonElement("additionalDetails")]
+        public UserDetail AdditionalDetails { get; set; }
+
         [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

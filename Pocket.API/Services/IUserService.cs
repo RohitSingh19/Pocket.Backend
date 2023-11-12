@@ -18,6 +18,12 @@ namespace Pocket.API.Services
 
         Task<bool> CreateUserName(PocketProfile pocketProfile);
 
-        Task<bool> UpdateUserNameInUsers(string userName, string userId);
+        Task<bool> AddUserNameForUser(string email, string userName);
+
+        Dictionary<string, List<Profession>> GetProfessions();
+
+        Task<bool> AddAdditonalDetails(UserDetail userDetail, string email);
+
+        Task<UserProfileDTO> GetUserProfile(string email);
     }
 }

@@ -55,7 +55,7 @@ namespace Pocket.API.Controllers
 
         [HttpPost("login")] //POST: api/auth/login
         [AllowAnonymous]
-        public async Task<ActionResult<User>> Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             var user = await _userService.GetUserByEmail(loginDTO.Email);   
 
@@ -68,7 +68,12 @@ namespace Pocket.API.Controllers
                 if (computedHash[i] != user.PasswordHash[i])
                     return Unauthorized(Constants.Messages.PasswordIncorrect);
 
-            return Ok(CreateUserResponseWithToken(user));
+            return Ok(new ApiResponse<UserResponseDTO>
+            {
+                Success = true,
+                Message = Constants.Messages.UserRegistered,
+                Data = CreateUserResponseWithToken(user)
+            });
         }
 
         private UserResponseDTO CreateUserResponseWithToken(User user)

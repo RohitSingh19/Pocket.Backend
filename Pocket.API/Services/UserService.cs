@@ -23,10 +23,18 @@ namespace Pocket.API.Services
             await _usersCollection.InsertOneAsync(user);
             return true;
         }
+
         public async Task<bool> CreateUserName(PocketProfile pocketProfile)
         {
-            await _pocketProfileCollection.InsertOneAsync(pocketProfile);
-            return true;
+            try
+            {
+                await _pocketProfileCollection.InsertOneAsync(pocketProfile);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return true;
+            }
         }
         public async Task<User> GetUserByEmail(string Email)
         {
@@ -53,12 +61,54 @@ namespace Pocket.API.Services
                 return false;
             }
         }
-        public async Task<bool> UpdateUserNameInUsers(string userName, string userId)
+        public async Task<bool> AddUserNameForUser(string email, string userName)
         {
-            var filter = Builders<User>.Filter.Eq(user => user.Id, userId);
-            var update = Builders<User>.Update.Set(user => user.UserName, userName);
-            await _usersCollection.UpdateOneAsync(filter, update); 
-            return true;
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            
+            var update = Builders<User>.Update
+                .Set(u =>  u.UserName, userName)
+                .Set(u=> u.Stage, Constants.UserProfileStages.AdditionalDetailsStage);
+
+            var updatedResut = await _usersCollection.UpdateOneAsync(filter, update);
+            
+            return (updatedResut.ModifiedCount > 0);
+        }
+        public Dictionary<string, List<Profession>> GetProfessions()
+        {
+             return new UserProfession().GetUserProfessions();   
+        }
+
+        public async Task<bool> AddAdditonalDetails(UserDetail userDetail, string email)
+        {
+            var userDeailObj = new UserDetail();
+            userDeailObj.FullName = userDetail.FullName;
+            userDeailObj.Profession = userDetail.Profession;
+            userDeailObj.Category = userDetail.Category;
+
+            
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            var update = Builders<User>.Update
+                .Set(u => u.AdditionalDetails, userDeailObj)
+                .Set(u=> u.Stage, Constants.UserProfileStages.ActiveStage);
+
+            var updatedResut = await _usersCollection.UpdateOneAsync(filter, update);
+
+            return (updatedResut.ModifiedCount > 0);
+        }
+
+        public async Task<UserProfileDTO> GetUserProfile(string email)
+        {
+            var userInDb = await _usersCollection.Find<User>(x => x.Email == email).FirstOrDefaultAsync();
+            UserProfileDTO profile = new UserProfileDTO();
+            if (userInDb != null) { 
+                profile.UserName = userInDb.UserName;
+                profile.Email = email;
+                profile.Stage = userInDb.Stage;
+                profile.CreatedAt = userInDb.CreatedAt;
+                profile.LastActiveAt = userInDb.LastActiveAt;
+                profile.AddtionalDetails = userInDb.AdditionalDetails;
+            }
+            return profile;
         }
     }
 }
