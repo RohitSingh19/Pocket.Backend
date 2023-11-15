@@ -1,10 +1,26 @@
-﻿namespace Pocket.API.Models
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace Pocket.API.Models
 {
     public class UserProfile
     {
-        public string ProfileTypeId { get; set; }   
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("_id")]
+        public string Id { get; set; }
+
+        [BsonElement("profileUserName")]
         public string ProfileUserName { get; set; }
-        public DateTime LastUpdated { get; set; }
-        public bool IsVisibleToOthers { get; set; }
+
+        [BsonElement("profileType")]
+        public string ProfileType { get; set; }
+
+        [BsonElement("lastUpdated")]
+        public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
+        
+        [BsonElement("isVisibleToOthers")]
+        public bool IsVisibleToOthers { get; set; } = true;
+
     }
 }

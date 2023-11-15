@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace Pocket.API.Models
 {
-    public class Profile
+    public class SocialProfile
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -12,14 +12,14 @@ namespace Pocket.API.Models
         
         [BsonElement("type")]
         public string Type { get; set; }
-
-        [BsonElement("typeId")]
-        public int TypeId { get; set; }
-        
-        [BsonElement("typeKey")]
-        public string TypeKey { get; set; }
         
         [BsonElement("baseUrl")]
-        public string BaseUrl { get; set; } 
+        public string BaseUrl { get; set; }
+
+        [BsonElement("searchKey")]
+        public string SearchKey { get; set; }
+        
+        [BsonElement("name")]
+        public string Name { get; set; }
     }
 }

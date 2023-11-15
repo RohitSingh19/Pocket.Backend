@@ -30,9 +30,9 @@ namespace Pocket.API.Controllers
 
             var pocketProfile = new PocketProfile()
             {
+                Email = email,
                 UserName = userNameDTO.UserName,
                 CreatedAt = DateTime.UtcNow,
-                UserId = userNameDTO.Id,
                 LastModifiedAt = DateTime.UtcNow,
             };
 

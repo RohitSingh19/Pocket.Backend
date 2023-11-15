@@ -5,9 +5,10 @@ namespace Pocket.API.Services
 {
     public interface IPocketService
     {
-        Task<bool> AddProfile(CreatePocketProfileItemDTO profileItemDTO);
-        Task<Profile> GetProfileByKey(string key);
+        Task<bool> AddProfile(CreatePocketProfileItemDTO profileItemDTO, string userName);
+        Task<IEnumerable<SocialProfile>> GetSocialProfiles();
+        Task<SocialProfile> GetSocialProfile(string type);
+        Task<PocketProfile> GetPocketProfile(string username);
 
-        Task<PocketProfile> GetUserProfile(string userName);
     }
 }
