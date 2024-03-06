@@ -9,6 +9,6 @@ namespace Pocket.API.DTO
         public Constants.UserProfileStages Stage { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastActiveAt { get; set;}
-        public UserDetail AddtionalDetails { get; set; }    
+        public UserDetail AdditionalDetails { get; set; }    
     }
 }

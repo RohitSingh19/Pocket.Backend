@@ -8,7 +8,7 @@ namespace Pocket.API.Services
     {
         Task<bool> AddUser(User user);
 
-        Task<bool> HasUserAlreadyRegistered(string email);
+        Task<bool> HasUserAlreadyRegistered(string email, string userName);
 
         Task<User> GetUserByEmail(string email);
 
@@ -24,6 +24,8 @@ namespace Pocket.API.Services
 
         Task<bool> AddAdditonalDetails(UserDetail userDetail, string email);
 
-        Task<UserProfileDTO> GetUserProfile(string email);
+        Task<UserProfileDTO> GetUserProfile(string userName);
+
+        Task<bool> InitializePocketProfile(string userName, string email);
     }
 }

@@ -6,7 +6,10 @@ namespace Pocket.API.Models
     {
         [BsonElement("fullName")]
         public string FullName { get; set; }
-        
+
+        [BsonElement("bio")]
+        public string Bio { get; set; }
+
         [BsonElement("profession")]
         public string Profession { get; set; }
         

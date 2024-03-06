@@ -8,12 +8,12 @@
         public static string UserRegistered = "User registered successfully";
         public static string UserNameAlreadyTaken = "Username is already taken";
         public static string UserNameCreated = "Username created successfully";
-        /// <summary>
-        /// User Profession Fetched Successfully
-        /// </summary>
+        public static string EmailAlreadyRegistered = "Email is already registered";
         public static string UserProfessions = "Professions fetched successfully";
         public static string UserAdditionalDetails = "Additional details updated successfully";
         public static string UserProfileFetched = "User profile fecthed successfully";
+        public static string UserProfileAdded = "User profile added successfully";
+
     }
 
     public static class Errors

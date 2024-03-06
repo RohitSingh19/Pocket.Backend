@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Pocket.API.DTO;
 using Pocket.API.Handlers;
 using Pocket.API.Handlers.Attributes;
 using Pocket.API.Models;
 using Pocket.API.Services;
-
+using System.Net;
 
 namespace Pocket.API.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -50,13 +49,48 @@ namespace Pocket.API.Controllers
            });
         }
 
+
+        [HttpGet("userNameTaken")] //GET: api/user/userNameTaken
+        [AllowAnonymous]
+        public async Task<IActionResult> UserNameTaken(string userName)
+        {
+            var user = await _userService.GetUserByUsername(userName);
+            
+            var response = new ApiResponse<bool>
+            {
+                Data = (user != null),
+                Success = true,
+                Message = (user != null) ? $"{userName} {Constants.Messages.UserNameAlreadyTaken}" : null,
+                StatusCode = (user != null) ? (int)HttpStatusCode.BadRequest : (int)HttpStatusCode.OK
+            };
+
+            return Ok(response);
+        }
+
+        [HttpGet("emailTaken")] //GET: api/user/emailTaken
+        [AllowAnonymous]
+        public async Task<IActionResult> EmailTaken(string email)
+        {
+            var user = await _userService.GetUserByEmail(email);
+
+            var response = new ApiResponse<bool>
+            {
+                Data = (user != null),
+                Success = true,
+                Message = (user != null) ? $"{email} {Constants.Messages.EmailAlreadyRegistered}" : null,
+                StatusCode = (user != null) ? (int)HttpStatusCode.BadRequest : (int)HttpStatusCode.OK
+            };
+
+            return Ok(response);
+        }
+
         [HttpPost("createAdditionalDetails")] //POST: api/user/createAdditionalDetails
-        [ValidateTokenAndEmail]
+        //[ValidateTokenAndEmail]
         public async Task<IActionResult> CreateAdditionalDetails(UserDetail userDetail, string email)
         {
             return Ok(new ApiResponse<object>
             { 
-                Data = await this._userService.AddAdditonalDetails(userDetail, email),
+                Data = await _userService.AddAdditonalDetails(userDetail, email),
                 Success = true,
                 Message = Constants.Messages.UserAdditionalDetails
             });
@@ -66,19 +100,19 @@ namespace Pocket.API.Controllers
         public async Task<IActionResult> GetAllProfessions()
         {
             return Ok(new ApiResponse<object> { 
-                Data = await Task.FromResult(this._userService.GetProfessions()),
+                Data = await Task.FromResult(_userService.GetProfessions()),
                 Message = Constants.Messages.UserProfessions,
                 Success = true
             });
         }
 
         [HttpGet("getUserProfile")] //GET: api/user/getUserProfile
-        [ValidateTokenAndEmail] 
-        public async Task<IActionResult> GetUserProfile(string email)
+        //[ValidateTokenAndEmail]
+        public async Task<IActionResult> GetUserProfile(string userName)
         {
             return Ok(new ApiResponse<UserProfileDTO>
             {
-                Data = await this._userService.GetUserProfile(email),
+                Data = await this._userService.GetUserProfile(userName),
                 Success = true,
                 Message = Constants.Messages.UserProfileFetched
             });

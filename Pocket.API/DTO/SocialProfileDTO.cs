@@ -1,5 +1,6 @@
 ﻿namespace Pocket.API.DTO
 {
+    
     public class SocialProfileDTO
     {
         public string Name { get; set; }

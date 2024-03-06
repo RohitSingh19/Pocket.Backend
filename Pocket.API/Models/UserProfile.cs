@@ -5,19 +5,20 @@ namespace Pocket.API.Models
 {
     public class UserProfile
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        [BsonElement("_id")]
-        public string Id { get; set; }
-
         [BsonElement("profileUserName")]
         public string ProfileUserName { get; set; }
 
-        [BsonElement("profileType")]
-        public string ProfileType { get; set; }
+        [BsonElement("name")]
+        public string Name { get; set; }
 
-        [BsonElement("lastUpdated")]
-        public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
+        [BsonElement("baseUrl")]
+        public string BaseUrl { get; set; }
+
+        [BsonElement("category")]
+        public string Category { get; set; }
+
+        [BsonElement("lastModifiedAt")]
+        public DateTime lastModifiedAt { get; set; } = DateTime.UtcNow;
         
         [BsonElement("isVisibleToOthers")]
         public bool IsVisibleToOthers { get; set; } = true;

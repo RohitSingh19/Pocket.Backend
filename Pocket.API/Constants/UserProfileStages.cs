@@ -2,9 +2,9 @@
 {
     public enum UserProfileStages
     {
-        ProfileNameStage = 1,
-        AdditionalDetailsStage = 2,
-        ActiveStage = 3,
-        DeactiveStage = 4,
+        LoginStage = 0,
+        AdditionalDetailsStage = 1,
+        ActiveStage = 2,
+        DeactiveStage = 3,
     }
 }

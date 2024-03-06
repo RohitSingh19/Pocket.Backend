@@ -19,11 +19,11 @@ namespace Pocket.API.Services
             _pocketProfileCollection = database.GetCollection<PocketProfile>(databaseSettings.Value.PocketProfileCollectionName);
         }
         public async Task<bool> AddUser(User user)
-        {
+        {           
             await _usersCollection.InsertOneAsync(user);
             return true;
+            List<List<int>> list = new List<List<int>>();
         }
-
         public async Task<bool> CreateUserName(PocketProfile pocketProfile)
         {
             try
@@ -48,18 +48,15 @@ namespace Pocket.API.Services
         {
             return await _usersCollection.Find<User>(x => x.UserName == UserName).FirstOrDefaultAsync();
         }
-        public async Task<bool> HasUserAlreadyRegistered(string Email)
+        public async Task<bool> HasUserAlreadyRegistered(string Email, string userName)
         {
-            try
-            {
-                if(string.IsNullOrEmpty(Email)) throw new ArgumentNullException("Email can not be null");
-                return (await _usersCollection.Find(x => x.Email == Email).AnyAsync());
-               
-            }
-            catch (Exception ex) 
-            {
-                return false;
-            }
+                if(string.IsNullOrEmpty(Email)) 
+                        throw new ArgumentNullException("Email can not be null");
+
+                if (string.IsNullOrEmpty(userName))
+                    throw new ArgumentNullException("Username can not be null");
+
+                return (await _usersCollection.Find(x => x.Email == Email || x.UserName == userName).AnyAsync());
         }
         public async Task<bool> AddUserNameForUser(string email, string userName)
         {
@@ -77,15 +74,16 @@ namespace Pocket.API.Services
         {
              return new UserProfession().GetUserProfessions();   
         }
-
         public async Task<bool> AddAdditonalDetails(UserDetail userDetail, string email)
         {
             var userDeailObj = new UserDetail();
             userDeailObj.FullName = userDetail.FullName;
             userDeailObj.Profession = userDetail.Profession;
             userDeailObj.Category = userDetail.Category;
+            userDeailObj.Bio = userDetail.Bio;
+            userDeailObj.ProfilePictureUrl = userDetail.ProfilePictureUrl;
+            userDeailObj.ProfileTheme = userDetail.ProfileTheme;
 
-            
             var filter = Builders<User>.Filter.Eq(u => u.Email, email);
             var update = Builders<User>.Update
                 .Set(u => u.AdditionalDetails, userDeailObj)
@@ -93,22 +91,36 @@ namespace Pocket.API.Services
 
             var updatedResut = await _usersCollection.UpdateOneAsync(filter, update);
 
-            return (updatedResut.ModifiedCount > 0);
-        }
+            var user = await GetUserByEmail(email);
 
-        public async Task<UserProfileDTO> GetUserProfile(string email)
+            return (updatedResut.ModifiedCount > 0 && await InitializePocketProfile(user.UserName, user.Email));
+        }
+        public async Task<UserProfileDTO> GetUserProfile(string userName)
         {
-            var userInDb = await _usersCollection.Find<User>(x => x.Email == email).FirstOrDefaultAsync();
+            var userInDb = await _usersCollection.Find<User>(x => x.UserName.ToLower() == userName.ToLower()).FirstOrDefaultAsync();
+            if(userInDb == null) { return null; }
+
             UserProfileDTO profile = new UserProfileDTO();
-            if (userInDb != null) { 
-                profile.UserName = userInDb.UserName;
-                profile.Email = email;
-                profile.Stage = userInDb.Stage;
-                profile.CreatedAt = userInDb.CreatedAt;
-                profile.LastActiveAt = userInDb.LastActiveAt;
-                profile.AddtionalDetails = userInDb.AdditionalDetails;
-            }
+            
+            profile.UserName = userInDb.UserName;
+            profile.Email = userInDb.Email;
+            profile.Stage = userInDb.Stage;
+            profile.CreatedAt = userInDb.CreatedAt;
+            profile.LastActiveAt = userInDb.LastActiveAt;
+            profile.AdditionalDetails = userInDb.AdditionalDetails;
+            
             return profile;
+        }
+        public async Task<bool> InitializePocketProfile(string userName, string email)
+        {
+            var pocketProfile = new PocketProfile();
+            pocketProfile.UserName = userName;
+            pocketProfile.Email = email;
+            pocketProfile.CreatedAt = DateTime.UtcNow;
+            pocketProfile.LastModifiedAt = DateTime.UtcNow;
+            pocketProfile.Profiles = new UserProfile[0];
+            await _pocketProfileCollection.InsertOneAsync(pocketProfile);
+            return true;
         }
     }
 }

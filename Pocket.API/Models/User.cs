@@ -25,7 +25,7 @@ namespace Pocket.API.Models
         public string UserName { get; set; }
 
         [BsonElement("stage")]
-        public UserProfileStages Stage { get; set; } = UserProfileStages.ProfileNameStage;
+        public UserProfileStages Stage { get; set; } = UserProfileStages.LoginStage;
 
         [BsonElement("additionalDetails")]
         public UserDetail AdditionalDetails { get; set; }

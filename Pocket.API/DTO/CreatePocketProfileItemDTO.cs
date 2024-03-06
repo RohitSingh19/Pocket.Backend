@@ -4,9 +4,7 @@ namespace Pocket.API.DTO
 {
     public class CreatePocketProfileItemDTO
     {
-        public string ProfileType { get; set; } 
-        public string SocialProfileUserName { get; set; }
-        public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
-        public bool IsVisibleToOthers { get; set; } = true;
+        public string ProfileId { get; set; } 
+        public string UserName { get; set; }
     }
 }
