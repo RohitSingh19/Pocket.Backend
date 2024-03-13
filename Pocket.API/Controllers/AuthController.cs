@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using Pocket.API.DTO;
 using Pocket.API.Handlers;
 using Pocket.API.Models;

@@ -11,7 +11,7 @@ namespace Pocket.API.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -85,7 +85,7 @@ namespace Pocket.API.Controllers
         }
 
         [HttpPost("createAdditionalDetails")] //POST: api/user/createAdditionalDetails
-        //[ValidateTokenAndEmail]
+        [ValidateTokenAndEmail]
         public async Task<IActionResult> CreateAdditionalDetails(UserDetail userDetail, string email)
         {
             return Ok(new ApiResponse<object>
@@ -107,7 +107,6 @@ namespace Pocket.API.Controllers
         }
 
         [HttpGet("getUserProfile")] //GET: api/user/getUserProfile
-        //[ValidateTokenAndEmail]
         public async Task<IActionResult> GetUserProfile(string userName)
         {
             return Ok(new ApiResponse<UserProfileDTO>
